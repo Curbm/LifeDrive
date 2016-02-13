@@ -1,0 +1,111 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+
+  dependencies {
+  }
+}
+
+apply plugin: 'com.android.application'
+
+
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+
+  defaultConfig {
+    applicationId "com.skyfire.hipda"
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
+
+    def props = loadProperties("build.properties")
+    versionCode props['VERSION'] as int
+    versionName props['VERSION']
+  }
+
+  dexOptions {
+    incremental true
+  }
+
+  signingConfigs {
+    release {
+      storeFile file(RELEASE_STORE_FILE)
+      storePassword RELEASE_STORE_PASSWORD
+      keyAlias RELEASE_KEY_ALIAS
+      keyPassword RELEASE_KEY_PASSWORD
+    }
+    debug {
+      storeFile file("debug.keystore")
+      storePassword "android"
+      keyAlias "androiddebugkey"
+      keyPassword "android"
+    }
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      signingConfig signingConfigs.release
+    }
+    debug {
+      applicationIdSuffix ".debug"
+      versionNameSuffix "-debug"
+    }
+  }
+}
+
+dependencies {
+  compile fileTree(include: ['*.jar'], dir: 'libs')
+
+  compile "com.android.support:support-v4:$supportVersion"
+  compile "com.android.support:appcompat-v7:$supportVersion"
+  compile "com.android.support:design:$supportVersion"
+  compile "com.android.support:recyclerview-v7:$supportVersion"
+  compile "com.android.support:cardview-v7:$supportVersion"
+  compile "com.android.support:preference-v7:$supportVersion"
+  compile "com.android.support:preference-v14:$supportVersion"
+
+  compile 'com.jakewharton:butterknife:7.0.0'
+  compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+  compile 'com.yqritc:recyclerview-flexibledivider:1.2.8'
+  compile 'org.jsoup:jsoup:1.8.3'
+  compile 'io.reactivex:rxjava:1.0.14'
+  compile 'io.reactivex:rxandroid:1.0.1'
+  compile 'com.trello:rxlifecycle:0.4.0'
+  compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
+  compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+
+  testCompile 'org.assertj:assertj-core:1.7.0'
+  testCompile "org.robolectric:robolectric:3.0"
+  testCompile 'org.mockito:mockito-core:1.10.19'
+}
+
+assembleRelease << {
+  println "Copy APK to /apk ..."
+  def apkDir = new File(rootProject.rootDir, "apk")
+  for (variant in android.applicationVariants) {
+    if (variant.name.contains("debug"))
+      continue;
+    def apkName = "${rootProject.name}-${variant.name}(${variant.versionCode}).apk"
+    def apkFile = new File(apkDir, apkName)
+    if (apkFile.exists()) {
+      println "Warning:replace existing file ${apkName}"
+      apkFile.delete()
+    }
+    copy {
+      from variant.outputs.get(0).outputFile
+      into apkDir
+      rename {
+        String fileName -> apkName
+      }
+    }
+  }
+}
+
+def loadProperties(fileName) {
+  Properties props = new Properties()
+  props.load(new FileInputStream(file(fileName)))
+  return props;
+}

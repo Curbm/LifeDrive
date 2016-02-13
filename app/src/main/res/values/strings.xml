@@ -1,0 +1,11 @@
+<resources>
+	<string name="app_name">LifeDrive</string>
+
+	<string name="login_loading">正在登录…</string>
+	<string name="thread_list_meta">%1$d / %2$d</string>
+	<string name="modified_time_text">更新于%1$s</string>
+	<string name="logout_confirm">退出登录?</string>
+	<string name="title_confirm">确认</string>
+	<string name="forum_setting_update_succeed">更新成功</string>
+
+</resources>

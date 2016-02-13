@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="账户">
+		<Preference
+				android:title="退出登录"
+				android:key="logout"
+				/>
+	</PreferenceCategory>
+	<PreferenceCategory android:title="其它">
+		<Preference
+				android:title="重新读取论坛设置"
+				android:key="update_forum_setting"
+				android:summary="版块列表,分页数等"
+				/>
+		<Preference
+				android:title="关于"
+				android:key="about"
+				/>
+	</PreferenceCategory>
+</PreferenceScreen>

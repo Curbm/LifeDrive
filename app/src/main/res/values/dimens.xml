@@ -1,0 +1,6 @@
+<resources>
+
+	<dimen name="navigation_drawer_width">300dp</dimen>
+
+	<dimen name="compound_padding_left">35dp</dimen>
+</resources>

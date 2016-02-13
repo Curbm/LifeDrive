@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="colorPrimary">#649ccf</color>
+	<color name="colorPrimaryDark">#456d91</color>
+	<color name="colorAccent">#308cc2</color>
+	<color name="colorButtonNormal">#55aae5</color>
+
+	<color name="textColorPrimary">#383838</color>
+	<color name="textColorSecondary">#939393</color>
+	<color name="colorDivider">#c6c6c6</color>
+
+	<color name="default_bg">#fdfdfd</color>
+	<color name="author_text_color">#7d7d7d</color>
+
+</resources>
