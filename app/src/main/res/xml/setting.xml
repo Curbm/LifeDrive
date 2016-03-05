@@ -13,6 +13,10 @@
 				android:summary="版块列表,分页数等"
 				/>
 		<Preference
+				android:title="清理缓存"
+				android:key="clear_cache"
+				/>
+		<Preference
 				android:title="关于"
 				android:key="about"
 				/>

@@ -11,6 +11,7 @@ import com.skyfire.hipda.R;
 import com.skyfire.hipda.bean.AccountInfo;
 import com.skyfire.hipda.bean.Forum;
 import com.skyfire.hipda.db.DbHelper;
+import com.skyfire.hipda.lib.WrapImageLoader;
 import com.skyfire.hipda.misc.PrefHelper;
 import com.skyfire.hipda.util.Toaster;
 import com.trello.rxlifecycle.FragmentEvent;
@@ -61,11 +62,19 @@ public class SettingActivity extends AbsActivity {
         case "update_forum_setting":
           onUpdateForumSettingClick();
           return true;
+        case "clear_cache":
+          onClearCacheClick();
+          return true;
         case "about":
           return true;
         default:
           return super.onPreferenceTreeClick(preference);
       }
+    }
+
+    private void onClearCacheClick() {
+      WrapImageLoader.get(getContext()).getLoader().clearDiskCache();
+      Toaster.showShort(getContext(), R.string.clear_cache_succeed);
     }
 
     private void onUpdateForumSettingClick() {
