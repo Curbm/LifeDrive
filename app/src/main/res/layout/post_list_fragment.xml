@@ -26,14 +26,12 @@
 				/>
 	</android.support.v4.widget.SwipeRefreshLayout>
 
-	<ProgressBar
+	<com.skyfire.hipda.widget.LoadingBar
 			android:id="@id/load_more_footer_view"
-			style="?android:progressBarStyleHorizontal"
-			android:indeterminate="true"
+			android:textColor="@color/colorAccent"
 			android:visibility="gone"
-			android:layout_alignParentBottom="true"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="-7dp"
+			android:layout_height="3dp"
+			android:layout_alignParentBottom="true"
 			/>
 </RelativeLayout>
