@@ -123,10 +123,8 @@ public class PostListActivity extends AbsActivity {
               firstHolder.mAuthorTV.setText(item.getAuthor());
               WrapImageLoader.get(getContext())
                   .load(item.getAvatarUrl())
-                  .delayBeforeLoad(300)
                   .cacheInMemory()
                   .cacheOnDisk()
-                  .scaleType(ImageScaleType.IN_SAMPLE_INT)
                   .loadingImage(R.drawable.default_avatar)
                   .into(firstHolder.mAvatarIV);
 
@@ -155,7 +153,6 @@ public class PostListActivity extends AbsActivity {
               normalHolder.mAuthorTV.setText(item.getAuthor());
               WrapImageLoader.get(getContext())
                   .load(item.getAvatarUrl())
-                  .delayBeforeLoad(300)
                   .cacheInMemory()
                   .cacheOnDisk()
                   .loadingImage(R.drawable.default_avatar)

@@ -82,7 +82,6 @@ public class ThreadListFragment extends AbsListFragment<List<ThreadListItem>> {
 
         WrapImageLoader.get(getContext())
             .load(item.getAvatarUrl())
-            .delayBeforeLoad(300)
             .cacheInMemory()
             .cacheOnDisk()
             .loadingImage(R.drawable.default_avatar)

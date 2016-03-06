@@ -7,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import com.skyfire.hipda.R;
-import com.skyfire.hipda.util.L;
+import com.skyfire.hipda.lib.WrapImageLoader;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -226,7 +226,11 @@ public abstract class AbsListFragment<T extends List> extends AbsFragment {
         if (lastVis != RecyclerView.NO_POSITION && lastVis == count - 1 && !allLoaded()) {
           loadOld();
         }
+        WrapImageLoader.get(getContext()).getLoader().resume();
+      } else {
+        WrapImageLoader.get(getContext()).getLoader().pause();
       }
+
     }
 
     @Override
