@@ -9,12 +9,12 @@ public class UploadImageContent extends ImageContent {
 
   private final int id;
   private final Date uploadTime;
-  private final int size;//bytes
+  private final String sizeText;
 
-  public UploadImageContent(int id, String url, int size, Date uploadTime) {
+  public UploadImageContent(int id, String url, String sizeText, Date uploadTime) {
     super(url);
     this.id = id;
-    this.size = size;
+    this.sizeText = sizeText;
     this.uploadTime = uploadTime;
   }
 
@@ -22,8 +22,8 @@ public class UploadImageContent extends ImageContent {
     return id;
   }
 
-  public int getSize() {
-    return size;
+  public String getSizeText() {
+    return sizeText;
   }
 
   public Date getUploadTime() {

@@ -233,8 +233,7 @@ public class PostListActivity extends AbsActivity {
 
           if (content instanceof UploadImageContent) {
             infoTV.setVisibility(View.VISIBLE);
-            infoTV.setText(String.format("%.2f kB", ((UploadImageContent) content).getSize() /
-                1000f));
+            infoTV.setText(((UploadImageContent) content).getSizeText());
           } else {
             infoTV.setVisibility(View.GONE);
           }

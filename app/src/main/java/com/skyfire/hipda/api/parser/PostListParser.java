@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
 public class PostListParser extends JsoupResponseConverter<List<Post>> {
 
   static final Pattern TIME_PATTERN = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}\\s\\d{2}:\\d{2}");
-  static final Pattern SIZE_PATTERN = Pattern.compile("\\d+\\.\\d+");
+  static final Pattern SIZE_PATTERN = Pattern.compile("(?<=\\().+(?=\\))");
   static final Pattern POST_ID_PATTERN = Pattern.compile("(?<=pid=)\\d+");
   static final Pattern REPLY_PATTERN = Pattern.compile("^\u56de\u590d\\s*\\d+#");
 
@@ -277,7 +277,7 @@ public class PostListParser extends JsoupResponseConverter<List<Post>> {
 
     int id = Util.parseIntNoThrow(attrId.replaceFirst("aimg_", ""));
     String url = UrlHelper.BASE_URL + attrFile;
-    int size = -1;
+    String size = null;
     Date uploadTime = null;
 
     Element infoElem = elem.siblingElements().select("div[id=aimg_" + id + "_menu").first();
@@ -286,7 +286,7 @@ public class PostListParser extends JsoupResponseConverter<List<Post>> {
       String infoText = infoElem.text();
       matcher = SIZE_PATTERN.matcher(infoText);
       if (matcher.find()) {
-        size = (int) (Float.parseFloat(matcher.group()) * 1024);
+        size = matcher.group();
       }
       matcher = TIME_PATTERN.matcher(infoText);
       if (matcher.find()) {
