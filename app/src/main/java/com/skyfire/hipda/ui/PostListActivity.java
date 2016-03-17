@@ -1,5 +1,6 @@
 package com.skyfire.hipda.ui;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,13 +18,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.skyfire.hipda.R;
 import com.skyfire.hipda.bean.Post;
 import com.skyfire.hipda.bean.content.*;
+import com.skyfire.hipda.lib.ImageLoadingTracker;
+import com.skyfire.hipda.lib.ImageLoadingTracker.TrackRecord;
 import com.skyfire.hipda.lib.WrapImageLoader;
 import com.skyfire.hipda.misc.PrefHelper;
 import com.skyfire.hipda.misc.Util;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.skyfire.hipda.widget.CircleProgressBar;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -41,6 +48,7 @@ public class PostListActivity extends AbsActivity {
     super.onCreate(savedInstanceState);
     getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new
         InnerFragment()).commit();
+
   }
 
   public static class InnerFragment extends AbsListFragment<List<Post>> {
@@ -52,6 +60,7 @@ public class PostListActivity extends AbsActivity {
     int mPageCount;
     boolean mAllLoaded;
     int mThreadId;
+    ImageLoadingTracker mImageLoadingTracker = new ImageLoadingTracker();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +83,12 @@ public class PostListActivity extends AbsActivity {
       ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
       ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
       ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    @Override
+    public void onDestroy() {
+      super.onDestroy();
+      mImageLoadingTracker.release(getContext());
     }
 
     @Override
@@ -210,14 +225,55 @@ public class PostListActivity extends AbsActivity {
           tv.setMovementMethod(Util.getLinkMovementMethod());
           container.addView(tv);
         } else if (content instanceof ImageContent) {
-          ImageView iv = (ImageView) inflater.inflate(R.layout.post_item_content_image,
-              container, false);
-          WrapImageLoader.get(getContext())
-              .load(((ImageContent) content).getUrl())
-              .cacheInMemory()
-              .cacheOnDisk()
-              .into(iv);
-          container.addView(iv);
+          View view = inflater.inflate(R.layout.post_item_content_image, container, false);
+          ImageView imgView = (ImageView) view.findViewById(R.id.img_view);
+          final CircleProgressBar progressBar = (CircleProgressBar) view
+              .findViewById(R.id.progress_bar);
+          TextView infoTV = (TextView) view.findViewById(R.id.info_tv);
+
+          if (content instanceof UploadImageContent) {
+            infoTV.setVisibility(View.VISIBLE);
+            infoTV.setText(String.format("%.2f kB", ((UploadImageContent) content).getSize() /
+                1000f));
+          } else {
+            infoTV.setVisibility(View.GONE);
+          }
+
+          ImageLoadingProgressListener progressListener = new ImageLoadingProgressListener() {
+
+            @Override
+            public void onProgressUpdate(String imageUri, View view, int current, int total) {
+              progressBar.setProgress(current / (float) total);
+            }
+          };
+
+          ImageLoadingListener listener = new SimpleImageLoadingListener() {
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+              progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+              progressBar.setVisibility(View.GONE);
+            }
+          };
+
+          String imgUrl = ((ImageContent) content).getUrl();
+          TrackRecord trackRecord = mImageLoadingTracker.track(imgUrl, imgView, listener,
+              progressListener);
+
+          if (!trackRecord.isLoading()) {
+            WrapImageLoader.get(getContext())
+                .load(imgUrl)
+                .progressListener(mImageLoadingTracker)
+                .loadingListener(mImageLoadingTracker)
+                .cacheOnDisk()
+                .cacheInMemory()
+                .into(trackRecord.getImageAwareForLoad());
+          }
+
+          container.addView(view);
         } else if (content instanceof ReplyContent) {
           Post post = getPostById(((ReplyContent) content).getReplyId(), position);
           if (post == null) {

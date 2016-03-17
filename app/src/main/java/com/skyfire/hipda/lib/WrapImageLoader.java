@@ -9,6 +9,10 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
+import com.nostra13.universalimageloader.core.imageaware.NonViewAware;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 
@@ -53,6 +57,10 @@ public final class WrapImageLoader {
 
   public void cancelDisplayTask(ImageView imageView) {
     mLoader.cancelDisplayTask(imageView);
+  }
+
+  public void cancelDisplayTask(ImageAware imageAware) {
+    mLoader.cancelDisplayTask(imageAware);
   }
 
   public static class Builder {
@@ -195,6 +203,10 @@ public final class WrapImageLoader {
     }
 
     public void into(ImageView imageView) {
+      into(new ImageViewAware(imageView));
+    }
+
+    public void into(ImageAware imageAware) {
       DisplayImageOptions.Builder builder = new DisplayImageOptions
           .Builder()
           .cacheOnDisk(cacheOnDisk)
@@ -223,7 +235,7 @@ public final class WrapImageLoader {
         }
       }
 
-      loader.displayImage(uri, imageView, builder.build(), loadingListener, progressListener);
+      loader.displayImage(uri, imageAware, builder.build(), loadingListener, progressListener);
     }
   }
 
