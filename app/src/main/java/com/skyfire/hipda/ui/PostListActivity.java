@@ -60,13 +60,14 @@ public class PostListActivity extends AbsActivity {
     int mPageCount;
     boolean mAllLoaded;
     int mThreadId;
-    ImageLoadingTracker mImageLoadingTracker = new ImageLoadingTracker();
+    ImageLoadingTracker mImageLoadingTracker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
+      mImageLoadingTracker = new ImageLoadingTracker(getContext(), getResources()
+          .getDimensionPixelSize(R.dimen.post_image_max_size) / 2);
       mThreadId = getActivity().getIntent().getIntExtra("id", -1);
-//      mThreadId = 1807134;
       refresh();
     }
 
@@ -88,7 +89,7 @@ public class PostListActivity extends AbsActivity {
     @Override
     public void onDestroy() {
       super.onDestroy();
-      mImageLoadingTracker.release(getContext());
+      mImageLoadingTracker.destroy();
     }
 
     @Override
@@ -227,9 +228,11 @@ public class PostListActivity extends AbsActivity {
         } else if (content instanceof ImageContent) {
           View view = inflater.inflate(R.layout.post_item_content_image, container, false);
           ImageView imgView = (ImageView) view.findViewById(R.id.img_view);
-          final CircleProgressBar progressBar = (CircleProgressBar) view
+          final LinearLayout placeHolderView =
+              (LinearLayout) view.findViewById(R.id.loading_place_holder);
+          final CircleProgressBar progressBar = (CircleProgressBar) placeHolderView
               .findViewById(R.id.progress_bar);
-          TextView infoTV = (TextView) view.findViewById(R.id.info_tv);
+          TextView infoTV = (TextView) placeHolderView.findViewById(R.id.info_tv);
 
           if (content instanceof UploadImageContent) {
             infoTV.setVisibility(View.VISIBLE);
@@ -249,12 +252,12 @@ public class PostListActivity extends AbsActivity {
           ImageLoadingListener listener = new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-              progressBar.setVisibility(View.GONE);
+              placeHolderView.setVisibility(View.GONE);
             }
 
             @Override
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-              progressBar.setVisibility(View.GONE);
+              placeHolderView.setVisibility(View.GONE);
             }
           };
 

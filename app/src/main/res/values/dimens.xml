@@ -3,4 +3,5 @@
 	<dimen name="navigation_drawer_width">300dp</dimen>
 
 	<dimen name="compound_padding_left">35dp</dimen>
+	<dimen name="post_image_max_size">200dp</dimen>
 </resources>

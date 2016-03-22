@@ -21,13 +21,21 @@ import java.util.Map;
 public class ImageLoadingTracker implements ImageLoadingProgressListener,
     ImageLoadingListener {
 
-  Map<String, TrackRecord> mImageLoadingMap = new HashMap<>();
+  final ImageSize mImageSize;
+  final Map<String, TrackRecord> mImageLoadingMap = new HashMap<>();
+
+  Context mContext;
+
+  public ImageLoadingTracker(Context context, int imageSize) {
+    mContext = context;
+    mImageSize = new ImageSize(imageSize, imageSize);
+  }
 
   public TrackRecord track(String uri, ImageView imageView, ImageLoadingListener listener,
                            ImageLoadingProgressListener progressListener) {
     TrackRecord record = mImageLoadingMap.get(uri);
     if (record == null) {
-      record = new TrackRecord();
+      record = new TrackRecord(mImageSize);
       mImageLoadingMap.put(uri, record);
     }
     record.mProgressListener = progressListener;
@@ -36,11 +44,12 @@ public class ImageLoadingTracker implements ImageLoadingProgressListener,
     return record;
   }
 
-  public void release(Context context) {
+  public void destroy() {
     for (TrackRecord trackRecord : mImageLoadingMap.values()) {
-      WrapImageLoader.get(context).cancelDisplayTask(trackRecord.mViewAware);
+      WrapImageLoader.get(mContext).cancelDisplayTask(trackRecord.mViewAware);
     }
     mImageLoadingMap.clear();
+    mContext = null;
   }
 
   @Override
@@ -88,19 +97,24 @@ public class ImageLoadingTracker implements ImageLoadingProgressListener,
   }
 
   public static class TrackRecord {
+
     private boolean mLoading;
     private ImageView mImageView;
     private ImageLoadingProgressListener mProgressListener;
     private ImageLoadingListener mListener;
-    private NonViewAware mViewAware = new NonViewAware(new ImageSize(0, 0), ViewScaleType.CROP) {
-      @Override
-      public boolean setImageBitmap(Bitmap bitmap) {
-        if (mImageView != null) {
-          mImageView.setImageBitmap(bitmap);
+    private final NonViewAware mViewAware;
+
+    private TrackRecord(ImageSize imageSize) {
+      mViewAware = new NonViewAware(imageSize, ViewScaleType.FIT_INSIDE) {
+        @Override
+        public boolean setImageBitmap(Bitmap bitmap) {
+          if (mImageView != null) {
+            mImageView.setImageBitmap(bitmap);
+          }
+          return true;
         }
-        return true;
-      }
-    };
+      };
+    }
 
     public boolean isLoading() {
       return mLoading;

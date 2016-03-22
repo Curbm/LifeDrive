@@ -9,10 +9,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
-import com.nostra13.universalimageloader.core.imageaware.NonViewAware;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 
@@ -78,7 +76,7 @@ public final class WrapImageLoader {
     boolean circle;
     boolean fadeIn;
 
-    ImageScaleType scaleType;
+    ImageScaleType scaleType = ImageScaleType.IN_SAMPLE_POWER_OF_2;
     ImageLoadingListener loadingListener;
     ImageLoadingProgressListener progressListener;
     ImageLoader loader;
