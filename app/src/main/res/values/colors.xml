@@ -11,5 +11,6 @@
 
 	<color name="default_bg">#fdfdfd</color>
 	<color name="author_text_color">#7d7d7d</color>
+	<color name="image_zoom_activity_bg">#c000</color>
 
 </resources>

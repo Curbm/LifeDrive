@@ -1,5 +1,6 @@
 package com.skyfire.hipda.ui;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,6 +37,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -215,10 +217,10 @@ public class PostListActivity extends AbsActivity {
       };
     }
 
-    private void bindContents(LinearLayout container, List<Content> list, int position) {
+    private void bindContents(LinearLayout container, final List<Content> list, int position) {
       container.removeAllViewsInLayout();
       LayoutInflater inflater = LayoutInflater.from(getContext());
-      for (Content content : list) {
+      for (final Content content : list) {
         if (content instanceof TextContent) {
           TextView tv = (TextView) inflater.inflate(R.layout.post_item_content_text,
               container, false);
@@ -261,7 +263,7 @@ public class PostListActivity extends AbsActivity {
             }
           };
 
-          String imgUrl = ((ImageContent) content).getUrl();
+          final String imgUrl = ((ImageContent) content).getUrl();
           TrackRecord trackRecord = mImageLoadingTracker.track(imgUrl, imgView, listener,
               progressListener);
 
@@ -274,6 +276,13 @@ public class PostListActivity extends AbsActivity {
                 .cacheInMemory()
                 .into(trackRecord.getImageAwareForLoad());
           }
+
+          imgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              onPostImageClick((ImageContent) content, list);
+            }
+          });
 
           container.addView(view);
         } else if (content instanceof ReplyContent) {
@@ -303,6 +312,34 @@ public class PostListActivity extends AbsActivity {
         }
       }
     }
+
+    private void onPostImageClick(ImageContent clickedContent, List<Content> contentList) {
+      ArrayList<String> uriList = new ArrayList<>();
+      int index = 0;
+      boolean indexSet = false;
+
+      for (Content content : contentList) {
+        if (content instanceof ImageContent) {
+          String url = ((ImageContent) content).getUrl();
+          File file = WrapImageLoader.get(getContext()).getLoader().getDiskCache().get(url);
+
+          if (file != null) {
+            String uri = file.getAbsolutePath();
+            uriList.add(uri);
+            if (clickedContent == content) {
+              indexSet = true;
+            } else if (!indexSet) {
+              index++;
+            }
+          }
+        }
+      }
+      Intent intent = new Intent(getContext(), ImageZoomActivity.class);
+      intent.putExtra("imageUris", uriList.toArray(new String[uriList.size()]));
+      intent.putExtra("index", index);
+      startActivity(intent);
+    }
+
 
     private Post getPostById(int id, int lastIndex) {
       for (int i = lastIndex - 1; i >= 0; i--) {

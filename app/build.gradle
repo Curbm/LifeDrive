@@ -70,6 +70,7 @@ dependencies {
   compile 'com.jakewharton:butterknife:7.0.0'
   compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
   compile 'com.yqritc:recyclerview-flexibledivider:1.2.8'
+  compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.4.1'
   compile 'org.jsoup:jsoup:1.8.3'
   compile 'io.reactivex:rxjava:1.0.14'
   compile 'io.reactivex:rxandroid:1.0.1'

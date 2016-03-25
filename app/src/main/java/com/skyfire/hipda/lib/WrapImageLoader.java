@@ -36,9 +36,7 @@ public final class WrapImageLoader {
     if (!mLoader.isInited()) {
       ImageLoaderConfiguration config = new ImageLoaderConfiguration
           .Builder(context)
-          .threadPriority(Thread.NORM_PRIORITY - 2)
           .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-          .tasksProcessingOrder(QueueProcessingType.LIFO)
           .build();
       mLoader.init(config);
     }

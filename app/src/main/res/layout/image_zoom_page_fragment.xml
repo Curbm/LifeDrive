@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		xmlns:tools="http://schemas.android.com/tools"
+		tools:background="@color/image_zoom_activity_bg"
+		>
+
+	<com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+			android:id="@+id/image_view"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			/>
+
+	<TextView
+			android:id="@+id/error_view"
+			android:layout_gravity="center"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="图片加载错误"
+			android:textColor="@android:color/white"
+			android:visibility="gone"
+			/>
+</FrameLayout>

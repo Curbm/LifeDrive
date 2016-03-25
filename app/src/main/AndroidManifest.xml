@@ -33,6 +33,11 @@
 				android:screenOrientation="portrait"
 				android:name=".ui.SettingActivity">
 		</activity>
+		<activity
+				android:theme="@style/ImageZoomActivity"
+				android:screenOrientation="portrait"
+				android:name=".ui.ImageZoomActivity">
+		</activity>
 	</application>
 
 </manifest>
