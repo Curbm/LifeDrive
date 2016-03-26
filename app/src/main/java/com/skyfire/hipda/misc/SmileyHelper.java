@@ -1,18 +1,18 @@
 package com.skyfire.hipda.misc;
 
-import android.text.style.ImageSpan;
 import android.util.SparseIntArray;
 import com.skyfire.hipda.R;
+import com.skyfire.hipda.lib.span.SmileySpan;
 
 /**
  * Created by Neil
  */
 public class SmileyHelper {
 
-  public static ImageSpan getSmileySpan(int id) {
+  public static SmileySpan getSmileySpan(int id) {
     int resId = RES_ID_MAP.get(id);
 
-    return resId == 0 ? null : new ImageSpan(App.getInstance(), resId);
+    return resId == 0 ? null : new SmileySpan(App.getInstance(), resId, 18);
   }
 
   static final SparseIntArray RES_ID_MAP = new SparseIntArray();

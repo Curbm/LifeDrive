@@ -5,13 +5,17 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.*;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.text.style.URLSpan;
+import android.text.style.UnderlineSpan;
 import com.skyfire.hipda.api.ApiException;
 import com.skyfire.hipda.api.JsoupResponseConverter;
 import com.skyfire.hipda.bean.Post;
 import com.skyfire.hipda.bean.content.*;
 import com.skyfire.hipda.lib.html.Color;
 import com.skyfire.hipda.lib.span.BulletSpan;
+import com.skyfire.hipda.lib.span.SmileySpan;
 import com.skyfire.hipda.misc.SmileyHelper;
 import com.skyfire.hipda.misc.UrlHelper;
 import com.skyfire.hipda.misc.Util;
@@ -209,7 +213,7 @@ public class PostListParser extends JsoupResponseConverter<List<Post>> {
         } else if (tag.equalsIgnoreCase("img")) {
           if (elemNode.hasAttr("smilieid")) {
             int smileid = Util.parseIntNoThrow(elemNode.attr("smilieid"));
-            ImageSpan span = SmileyHelper.getSmileySpan(smileid);
+            SmileySpan span = SmileyHelper.getSmileySpan(smileid);
             if (span != null) {
               builder.append("\uFFFC");
               builder.setSpan(span, length, builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
