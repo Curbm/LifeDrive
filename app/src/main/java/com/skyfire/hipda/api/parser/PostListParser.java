@@ -134,10 +134,7 @@ public class PostListParser extends JsoupResponseConverter<List<Post>> {
     for (Node node : parent.childNodes()) {
       if (node instanceof TextNode) {
         TextNode textNode = (TextNode) node;
-        SpannableStringBuilder textBuilder = trimText(new SpannableStringBuilder(textNode.text()));
-        if (textBuilder != null) {
-          builder.append(textBuilder);
-        }
+        builder.append(textNode.text());
       } else if (node instanceof Element) {
 
         int length = builder.length();
