@@ -13,7 +13,8 @@ public class PrefHelper {
   private enum Key {
     THREAD_PER_PAGE,
     POST_PER_PAGE,
-    DRAWER_SELECTED_POSITION
+    DRAWER_SELECTED_POSITION,
+    FORUM_HASH
   }
 
   private static SharedPreferences mSP;
@@ -45,6 +46,14 @@ public class PrefHelper {
 
   public static void setDrawerSelectedPosition(int position) {
     mSP.edit().putInt(Key.DRAWER_SELECTED_POSITION.name(), position).apply();
+  }
+
+  public static void setForumHash(String forumHash) {
+    mSP.edit().putString(Key.FORUM_HASH.name(), forumHash).apply();
+  }
+
+  public static String getForumHash() {
+    return mSP.getString(Key.FORUM_HASH.name(), null);
   }
 
 }

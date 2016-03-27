@@ -110,6 +110,7 @@ public class LoginActivity extends AbsActivity {
               public Void call(AccountInfo info) {
                 PrefHelper.setPostPageCount(info.getPostPerPage());
                 PrefHelper.setThreadPageCount(info.getThreadPerPage());
+                PrefHelper.setForumHash(info.getForumHash());
                 return null;
               }
             })

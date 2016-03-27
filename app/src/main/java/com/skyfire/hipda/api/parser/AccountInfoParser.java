@@ -32,10 +32,13 @@ public class AccountInfoParser extends JsoupResponseConverter<AccountInfo> {
         postPerPage = mapPostPerPage(Util.parseIntNoThrow(keyVal.value()));
       }
     }
+
+    String forumHash = form.select("input[name=formhash]").attr("value");
+
     return new AccountInfo(
         threadPerPage,
-        postPerPage
-    );
+        postPerPage,
+        forumHash);
   }
 
   private int mapThreadPerPage(int val) {

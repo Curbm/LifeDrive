@@ -5,13 +5,14 @@ package com.skyfire.hipda.bean;
  */
 public class AccountInfo {
 
-  public final int threadPerPage;
-  public final int postPerPage;
+  private final int threadPerPage;
+  private final int postPerPage;
+  private final String forumHash;
 
-
-  public AccountInfo(int threadPerPage, int postPerPage) {
+  public AccountInfo(int threadPerPage, int postPerPage, String forumHash) {
     this.threadPerPage = threadPerPage;
     this.postPerPage = postPerPage;
+    this.forumHash = forumHash;
   }
 
   public int getThreadPerPage() {
@@ -20,5 +21,9 @@ public class AccountInfo {
 
   public int getPostPerPage() {
     return postPerPage;
+  }
+
+  public String getForumHash() {
+    return forumHash;
   }
 }
