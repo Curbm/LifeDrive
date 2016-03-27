@@ -1,4 +1,4 @@
-package com.skyfire.hipda.ui;
+package com.skyfire.hipda.ui.abs;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

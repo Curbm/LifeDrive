@@ -17,6 +17,7 @@ import com.skyfire.hipda.bean.ThreadListItem;
 import com.skyfire.hipda.lib.WrapImageLoader;
 import com.skyfire.hipda.misc.PrefHelper;
 import com.skyfire.hipda.misc.Util;
+import com.skyfire.hipda.ui.abs.AbsListFragment;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

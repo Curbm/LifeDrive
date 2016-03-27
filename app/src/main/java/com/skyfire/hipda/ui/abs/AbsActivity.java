@@ -1,4 +1,4 @@
-package com.skyfire.hipda.ui;
+package com.skyfire.hipda.ui.abs;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,7 +19,7 @@ public class AbsActivity extends AppCompatActivity {
 
   @Nullable
   @Bind(R.id.tool_bar)
-  Toolbar mToolbar;
+  protected Toolbar mToolbar;
 
   final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 

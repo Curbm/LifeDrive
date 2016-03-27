@@ -13,6 +13,8 @@ import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.skyfire.hipda.R;
 import com.skyfire.hipda.misc.Util;
+import com.skyfire.hipda.ui.abs.AbsActivity;
+import com.skyfire.hipda.ui.abs.AbsFragment;
 
 /**
  * Created by Neil

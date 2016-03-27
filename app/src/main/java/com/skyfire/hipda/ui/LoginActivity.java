@@ -15,6 +15,7 @@ import com.skyfire.hipda.bean.AccountInfo;
 import com.skyfire.hipda.bean.Forum;
 import com.skyfire.hipda.db.DbHelper;
 import com.skyfire.hipda.misc.PrefHelper;
+import com.skyfire.hipda.ui.abs.AbsActivity;
 import com.skyfire.hipda.util.Toaster;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

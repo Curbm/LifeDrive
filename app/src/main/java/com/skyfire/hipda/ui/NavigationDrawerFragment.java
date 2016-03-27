@@ -3,7 +3,6 @@ package com.skyfire.hipda.ui;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,6 +17,7 @@ import com.skyfire.hipda.R;
 import com.skyfire.hipda.bean.Forum;
 import com.skyfire.hipda.db.DbHelper;
 import com.skyfire.hipda.misc.PrefHelper;
+import com.skyfire.hipda.ui.abs.AbsFragment;
 
 import java.util.ArrayList;
 import java.util.List;

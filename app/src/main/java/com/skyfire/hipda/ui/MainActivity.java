@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.skyfire.hipda.R;
+import com.skyfire.hipda.ui.abs.AbsActivity;
 
 public class MainActivity extends AbsActivity
     implements NavigationDrawerFragment.NavigationDrawerCallbacks {

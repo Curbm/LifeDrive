@@ -13,6 +13,7 @@ import com.skyfire.hipda.bean.Forum;
 import com.skyfire.hipda.db.DbHelper;
 import com.skyfire.hipda.lib.WrapImageLoader;
 import com.skyfire.hipda.misc.PrefHelper;
+import com.skyfire.hipda.ui.abs.AbsActivity;
 import com.skyfire.hipda.util.Toaster;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.trello.rxlifecycle.RxLifecycle;
