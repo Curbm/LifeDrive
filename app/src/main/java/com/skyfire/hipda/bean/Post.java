@@ -19,15 +19,17 @@ public class Post {
   private final List<Content> contentList;
   private final Date publishTime;
   private final Date modifyTime;
+  private final int floor;
 
 
   public Post(int id, int uid, String author, String avatarUrl, String title,
-              List<Content> contentList, Date publishTime, Date modifyTime) {
+              List<Content> contentList, Date publishTime, Date modifyTime, int floor) {
     this.id = id;
     this.uid = uid;
     this.author = author;
     this.avatarUrl = avatarUrl;
     this.title = title;
+    this.floor = floor;
     this.contentList = Collections.unmodifiableList(contentList);
     this.publishTime = publishTime;
     this.modifyTime = modifyTime;
@@ -64,5 +66,9 @@ public class Post {
 
   public Date getModifyTime() {
     return modifyTime;
+  }
+
+  public int getFloor() {
+    return floor;
   }
 }

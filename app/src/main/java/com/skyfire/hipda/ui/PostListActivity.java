@@ -141,6 +141,7 @@ public class PostListActivity extends AbsActivity {
               FirstItemHolder firstHolder = (FirstItemHolder) holder;
               firstHolder.mTitleTV.setText(item.getTitle());
               firstHolder.mAuthorTV.setText(item.getAuthor());
+              firstHolder.mFloorTV.setText(item.getFloor() + "#");
               WrapImageLoader.get(getContext())
                   .load(item.getAvatarUrl())
                   .cacheInMemory()
@@ -171,6 +172,7 @@ public class PostListActivity extends AbsActivity {
             case 1: {
               NormalItemHolder normalHolder = (NormalItemHolder) holder;
               normalHolder.mAuthorTV.setText(item.getAuthor());
+              normalHolder.mFloorTV.setText(item.getFloor() + "#");
               WrapImageLoader.get(getContext())
                   .load(item.getAvatarUrl())
                   .cacheInMemory()
@@ -383,6 +385,8 @@ public class PostListActivity extends AbsActivity {
       TextView mModifyTimeTV;
       @Bind(R.id.content_container)
       LinearLayout mContentContainer;
+      @Bind(R.id.floor_tv)
+      TextView mFloorTV;
 
       public FirstItemHolder(View itemView) {
         super(itemView);
@@ -402,6 +406,8 @@ public class PostListActivity extends AbsActivity {
       TextView mModifyTimeTV;
       @Bind(R.id.content_container)
       LinearLayout mContentContainer;
+      @Bind(R.id.floor_tv)
+      TextView mFloorTV;
 
       public NormalItemHolder(View itemView) {
         super(itemView);

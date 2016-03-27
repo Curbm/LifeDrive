@@ -55,6 +55,8 @@ public class PostListParser extends JsoupResponseConverter<List<Post>> {
     int id = Util.parseIntNoThrow(elem.attr("id").replaceFirst("pid", ""));
     int uid = Util.parseIntNoThrow(elem.select("td[class=postauthor] > div > a").attr("href")
         .replaceFirst("space\\.php\\?uid=", ""));
+    int floor = Util.parseIntNoThrow(elem.select("td[class=postcontent] > div[class=postinfo] > " +
+        "strong > a > em").text());
     String author = elem.select("td[class=postauthor] > div > a").text();
     String avatarUrl = UrlHelper.getAvatarUrl(uid);
     String title = elem.select("div[id=threadtitle]").text();
@@ -72,8 +74,8 @@ public class PostListParser extends JsoupResponseConverter<List<Post>> {
         title,
         contentList,
         publishTime,
-        modifiedTime
-    );
+        modifiedTime,
+        floor);
   }
 
   private List<Content> parseContentList(Element elem) {
