@@ -20,7 +20,7 @@ public interface ApiList {
   @POST("logging.php?action=login&loginsubmit=yes")
   @ResponseParser(LoginParser.class)
   @FormUrlEncoded
-  Observable<String> login(@Field("username") String username, @Field("password") String
+  Observable<Boolean> login(@Field("username") String username, @Field("password") String
       password, @FieldMap Map<String, String> extraParams);
 
   @GET("memcp.php?action=profile&typeid=5")

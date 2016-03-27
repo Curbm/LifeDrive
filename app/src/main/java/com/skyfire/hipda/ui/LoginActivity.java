@@ -84,9 +84,9 @@ public class LoginActivity extends AbsActivity {
             .login_loading), true, false);
 
         api().getLoginForumHash()
-            .flatMap(new Func1<String, Observable<String>>() {
+            .flatMap(new Func1<String, Observable<Boolean>>() {
               @Override
-              public Observable<String> call(String hash) {
+              public Observable<Boolean> call(String hash) {
                 Map<String, String> extraParams = new HashMap<>();
                 extraParams.put("loginfield", "username");
                 extraParams.put("loginsubmit", "true");
@@ -99,9 +99,9 @@ public class LoginActivity extends AbsActivity {
                 return api().login(userName, pwd, extraParams);
               }
             })
-            .flatMap(new Func1<String, Observable<AccountInfo>>() {
+            .flatMap(new Func1<Boolean, Observable<AccountInfo>>() {
               @Override
-              public Observable<AccountInfo> call(String s) {
+              public Observable<AccountInfo> call(Boolean s) {
                 return api().getAccountInfo();
               }
             })
