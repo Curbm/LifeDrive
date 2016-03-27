@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import butterknife.Bind;
 import butterknife.OnClick;
-import com.skyfire.hipda.BuildConfig;
 import com.skyfire.hipda.R;
 import com.skyfire.hipda.bean.AccountInfo;
 import com.skyfire.hipda.bean.Forum;
@@ -83,19 +82,20 @@ public class LoginActivity extends AbsActivity {
         final ProgressDialog dialog = ProgressDialog.show(this, null, getString(R.string
             .login_loading), true, false);
 
-        api().getForumHash()
+        api().getLoginForumHash()
             .flatMap(new Func1<String, Observable<String>>() {
               @Override
               public Observable<String> call(String hash) {
-                Map<String, String> staticParams = new HashMap<>();
-                staticParams.put("loginfield", "username");
-                staticParams.put("loginsubmit", "true");
-                staticParams.put("cookietime", "2592000");
+                Map<String, String> extraParams = new HashMap<>();
+                extraParams.put("loginfield", "username");
+                extraParams.put("loginsubmit", "true");
+                extraParams.put("cookietime", "2592000");
+                extraParams.put("formHash", hash);
 
                 String userName = mUsernameET.getText().toString();
                 String pwd = mPwdET.getText().toString();
 
-                return api().login(userName, pwd, hash, staticParams);
+                return api().login(userName, pwd, extraParams);
               }
             })
             .flatMap(new Func1<String, Observable<AccountInfo>>() {
