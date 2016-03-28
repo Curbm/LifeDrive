@@ -49,9 +49,12 @@
 		<item name="colorAccent">@color/colorAccent</item>
 	</style>
 
-	<style name="ImageZoomActivity" parent="AppTheme">
+	<style name="ImageZoomActivityBase" parent="AppTheme">
 		<item name="android:windowIsTranslucent">true</item>
 		<item name="android:windowBackground">@color/image_zoom_activity_bg</item>
+	</style>
+
+	<style name="ImageZoomActivity" parent="ImageZoomActivityBase">
 	</style>
 
 </resources>
