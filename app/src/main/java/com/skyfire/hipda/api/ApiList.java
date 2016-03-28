@@ -5,7 +5,7 @@ import com.skyfire.hipda.api.parser.*;
 import com.skyfire.hipda.bean.AccountInfo;
 import com.skyfire.hipda.bean.Forum;
 import com.skyfire.hipda.bean.Post;
-import com.skyfire.hipda.bean.ThreadListItem;
+import com.skyfire.hipda.bean.Thread;
 import com.skyfire.hipda.db.DbHelper;
 import com.skyfire.hipda.misc.UrlHelper;
 import com.squareup.okhttp.*;
@@ -104,7 +104,7 @@ public class ApiList {
     return Observable.create(new CallOnSubscribe<>(call, new ForumListParser()));
   }
 
-  public Observable<List<ThreadListItem>> getThreadList(int forumId, int page) {
+  public Observable<List<Thread>> getThreadList(int forumId, int page) {
     HttpUrl url = HttpUrl.parse(UrlHelper.BASE_URL + "forumdisplay.php")
         .newBuilder()
         .addEncodedQueryParameter("fid", String.valueOf(forumId))

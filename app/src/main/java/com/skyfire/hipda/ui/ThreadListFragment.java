@@ -13,7 +13,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.skyfire.hipda.R;
-import com.skyfire.hipda.bean.ThreadListItem;
+import com.skyfire.hipda.bean.Thread;
 import com.skyfire.hipda.lib.WrapImageLoader;
 import com.skyfire.hipda.misc.PrefHelper;
 import com.skyfire.hipda.misc.Util;
@@ -28,9 +28,9 @@ import java.util.List;
 
 import static com.skyfire.hipda.api.ApiList.api;
 
-public class ThreadListFragment extends AbsListFragment<List<ThreadListItem>> {
+public class ThreadListFragment extends AbsListFragment<List<Thread>> {
 
-  List<ThreadListItem> mList = new ArrayList<>();
+  List<Thread> mList = new ArrayList<>();
   int mForumId;
   int mPageCount;
   boolean mAllLoaded;
@@ -61,7 +61,7 @@ public class ThreadListFragment extends AbsListFragment<List<ThreadListItem>> {
 
   @Override
   protected void onItemClick(RecyclerView parent, View view, int position) {
-    ThreadListItem item = mList.get(position);
+    Thread item = mList.get(position);
     Intent intent = new Intent(getContext(), PostListActivity.class);
     intent.putExtra("id", item.getId());
     startActivity(intent);
@@ -79,7 +79,7 @@ public class ThreadListFragment extends AbsListFragment<List<ThreadListItem>> {
 
       @Override
       public void onBindViewHolder(ItemHolder holder, int position) {
-        ThreadListItem item = mList.get(position);
+        Thread item = mList.get(position);
 
         WrapImageLoader.get(getContext())
             .load(item.getAvatarUrl())
@@ -129,30 +129,30 @@ public class ThreadListFragment extends AbsListFragment<List<ThreadListItem>> {
   }
 
   @Override
-  protected Observable<List<ThreadListItem>> createLoadNewObservable() {
+  protected Observable<List<Thread>> createLoadNewObservable() {
     return api().getThreadList(mForumId, 1)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .compose(this.<List<ThreadListItem>>bindOnDestroy());
+        .compose(this.<List<Thread>>bindOnDestroy());
   }
 
   @Override
-  protected Observable<List<ThreadListItem>> createLoadOldObservable() {
+  protected Observable<List<Thread>> createLoadOldObservable() {
     return api().getThreadList(mForumId, mPageCount + 1)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .compose(this.<List<ThreadListItem>>bindOnDestroy());
+        .compose(this.<List<Thread>>bindOnDestroy());
   }
 
   @Override
-  protected void onPostLoadOld(List<ThreadListItem> list) {
+  protected void onPostLoadOld(List<Thread> list) {
     mList.addAll(list);
     mAllLoaded = list.size() < PrefHelper.getThreadPageCount();
     mPageCount++;
   }
 
   @Override
-  protected void onPostLoadNew(List<ThreadListItem> list) {
+  protected void onPostLoadNew(List<Thread> list) {
     mList.clear();
     mList.addAll(list);
     mPageCount = 1;

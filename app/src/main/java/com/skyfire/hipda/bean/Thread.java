@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by Neil
  */
-public class ThreadListItem {
+public class Thread {
 
   private final int id;
   private final int uid;
@@ -19,7 +19,7 @@ public class ThreadListItem {
   private final boolean hasImg;
   private final boolean sticky;
 
-  public ThreadListItem(int id, int uid, String author, String avatarUrl, String subject, Date
+  public Thread(int id, int uid, String author, String avatarUrl, String subject, Date
       publishTime, int viewNum, int commentNum, int pageCount, boolean hasImg, boolean sticky) {
     this.id = id;
     this.uid = uid;

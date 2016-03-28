@@ -2,7 +2,7 @@ package com.skyfire.hipda.api.parser;
 
 import com.skyfire.hipda.api.ApiException;
 import com.skyfire.hipda.api.ResponseConverter;
-import com.skyfire.hipda.bean.ThreadListItem;
+import com.skyfire.hipda.bean.Thread;
 import com.skyfire.hipda.misc.UrlHelper;
 import com.skyfire.hipda.misc.Util;
 import org.jsoup.Jsoup;
@@ -15,16 +15,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ThreadListParser extends ResponseConverter<List<ThreadListItem>> {
+public class ThreadListParser extends ResponseConverter<List<Thread>> {
 
   @Override
-  public List<ThreadListItem> parse(String response) throws ApiException {
+  public List<Thread> parse(String response) throws ApiException {
     Document doc = Jsoup.parse(response);
     Elements stickyElements = doc
         .select("div[id=threadlist] table[class=datatable] > tbody[id^=stickthread]");
     Elements normalElements = doc
         .select("div[id=threadlist] table[class=datatable] > tbody[id^=normalthread]");
-    List<ThreadListItem> list = new ArrayList<>(normalElements.size() + stickyElements.size());
+    List<Thread> list = new ArrayList<>(normalElements.size() + stickyElements.size());
     for (Element elem : stickyElements) {
       list.add(parseItem(elem, true));
     }
@@ -34,7 +34,7 @@ public class ThreadListParser extends ResponseConverter<List<ThreadListItem>> {
     return list;
   }
 
-  private ThreadListItem parseItem(Element elem, boolean sticky) {
+  private Thread parseItem(Element elem, boolean sticky) {
     int id = Util.parseIntNoThrow(elem.attr("id").replaceFirst("stickthread_|normalthread_", ""));
 
     int uid = 0;
@@ -53,7 +53,7 @@ public class ThreadListParser extends ResponseConverter<List<ThreadListItem>> {
     int pageCount = parsePageCount(elem);
     boolean hasImg = elem.select("th[class=^subject] > img[class=attach]") != null;
 
-    return new ThreadListItem(
+    return new Thread(
         id,
         uid,
         author,
