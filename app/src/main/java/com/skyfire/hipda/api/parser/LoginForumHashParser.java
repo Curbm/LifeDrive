@@ -1,12 +1,12 @@
 package com.skyfire.hipda.api.parser;
 
 import com.skyfire.hipda.api.ApiException;
-import com.skyfire.hipda.api.JsoupResponseConverter;
+import com.skyfire.hipda.api.ResponseConverter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-public class GetForumHashParser extends JsoupResponseConverter<String> {
+public class LoginForumHashParser extends ResponseConverter<String> {
 
   @Override
   public String parse(String response) throws ApiException {

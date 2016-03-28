@@ -1,13 +1,13 @@
 package com.skyfire.hipda.api;
 
 import com.squareup.okhttp.ResponseBody;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
-import retrofit.Converter;
 
-public abstract class JsoupResponseConverter<T> implements Converter<ResponseBody, T> {
+public abstract class ResponseConverter<T> {
 
-  @Override public T convert(ResponseBody value) throws IOException {
+  public T convert(ResponseBody value) throws IOException {
     try {
       String response = new String(value.bytes(), Charset.forName("gbk"));
       value.close();

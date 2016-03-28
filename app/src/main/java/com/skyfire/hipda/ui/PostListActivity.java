@@ -43,7 +43,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.skyfire.hipda.api.ApiWrapper.api;
+import static com.skyfire.hipda.api.ApiList.api;
 
 public class PostListActivity extends AbsActivity {
 

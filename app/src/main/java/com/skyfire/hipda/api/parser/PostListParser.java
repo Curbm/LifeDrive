@@ -10,7 +10,7 @@ import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.text.style.UnderlineSpan;
 import com.skyfire.hipda.api.ApiException;
-import com.skyfire.hipda.api.JsoupResponseConverter;
+import com.skyfire.hipda.api.ResponseConverter;
 import com.skyfire.hipda.bean.Post;
 import com.skyfire.hipda.bean.content.*;
 import com.skyfire.hipda.lib.html.Color;
@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PostListParser extends JsoupResponseConverter<List<Post>> {
+public class PostListParser extends ResponseConverter<List<Post>> {
 
   static final Pattern TIME_PATTERN = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}\\s\\d{2}:\\d{2}");
   static final Pattern SIZE_PATTERN = Pattern.compile("(?<=\\().+(?=\\))");

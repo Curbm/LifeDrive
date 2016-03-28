@@ -1,7 +1,7 @@
 package com.skyfire.hipda.api.parser;
 
 import com.skyfire.hipda.api.ApiException;
-import com.skyfire.hipda.api.JsoupResponseConverter;
+import com.skyfire.hipda.api.ResponseConverter;
 import com.skyfire.hipda.bean.ThreadListItem;
 import com.skyfire.hipda.misc.UrlHelper;
 import com.skyfire.hipda.misc.Util;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ThreadListParser extends JsoupResponseConverter<List<ThreadListItem>> {
+public class ThreadListParser extends ResponseConverter<List<ThreadListItem>> {
 
   @Override
   public List<ThreadListItem> parse(String response) throws ApiException {

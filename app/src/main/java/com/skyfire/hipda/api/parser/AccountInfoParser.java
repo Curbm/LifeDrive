@@ -1,7 +1,7 @@
 package com.skyfire.hipda.api.parser;
 
 import com.skyfire.hipda.api.ApiException;
-import com.skyfire.hipda.api.JsoupResponseConverter;
+import com.skyfire.hipda.api.ResponseConverter;
 import com.skyfire.hipda.bean.AccountInfo;
 import com.skyfire.hipda.misc.Util;
 import org.jsoup.Connection;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Neil
  */
-public class AccountInfoParser extends JsoupResponseConverter<AccountInfo> {
+public class AccountInfoParser extends ResponseConverter<AccountInfo> {
 
   @Override
   public AccountInfo parse(String response) throws ApiException {

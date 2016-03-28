@@ -23,11 +23,9 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static com.skyfire.hipda.api.ApiWrapper.api;
+import static com.skyfire.hipda.api.ApiList.api;
 
 public class LoginActivity extends AbsActivity {
 
@@ -82,26 +80,13 @@ public class LoginActivity extends AbsActivity {
       case R.id.login_btn:
         final ProgressDialog dialog = ProgressDialog.show(this, null, getString(R.string
             .login_loading), true, false);
+        String userName = mUsernameET.getText().toString();
+        String pwd = mPwdET.getText().toString();
 
-        api().getLoginForumHash()
-            .flatMap(new Func1<String, Observable<Boolean>>() {
+        api().login(userName, pwd)
+            .flatMap(new Func1<Void, Observable<AccountInfo>>() {
               @Override
-              public Observable<Boolean> call(String hash) {
-                Map<String, String> extraParams = new HashMap<>();
-                extraParams.put("loginfield", "username");
-                extraParams.put("loginsubmit", "true");
-                extraParams.put("cookietime", "2592000");
-                extraParams.put("formHash", hash);
-
-                String userName = mUsernameET.getText().toString();
-                String pwd = mPwdET.getText().toString();
-
-                return api().login(userName, pwd, extraParams);
-              }
-            })
-            .flatMap(new Func1<Boolean, Observable<AccountInfo>>() {
-              @Override
-              public Observable<AccountInfo> call(Boolean s) {
+              public Observable<AccountInfo> call(Void v) {
                 return api().getAccountInfo();
               }
             })

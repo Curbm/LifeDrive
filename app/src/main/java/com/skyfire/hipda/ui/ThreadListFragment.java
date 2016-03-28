@@ -26,7 +26,7 @@ import rx.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.skyfire.hipda.api.ApiWrapper.api;
+import static com.skyfire.hipda.api.ApiList.api;
 
 public class ThreadListFragment extends AbsListFragment<List<ThreadListItem>> {
 

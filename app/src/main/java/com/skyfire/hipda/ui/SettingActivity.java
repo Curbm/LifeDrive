@@ -26,7 +26,7 @@ import rx.subjects.BehaviorSubject;
 
 import java.util.List;
 
-import static com.skyfire.hipda.api.ApiWrapper.api;
+import static com.skyfire.hipda.api.ApiList.api;
 
 /**
  * Created by Neil
