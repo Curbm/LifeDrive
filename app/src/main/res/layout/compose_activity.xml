@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:gravity="center_horizontal"
+		android:layout_width="300dp"
+		android:layout_height="wrap_content"
+		xmlns:tools="http://schemas.android.com/tools"
+		tools:background="#ccc"
+		>
+
+	<EditText
+			android:id="@+id/content_et"
+			android:padding="16dp"
+			android:hint="回复内容"
+			android:minLines="4"
+			android:gravity="top"
+			android:background="@null"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			/>
+
+	<View
+			android:background="@color/colorDivider"
+			android:layout_width="match_parent"
+			android:layout_height="1px"
+			/>
+
+	<LinearLayout
+			android:padding="2dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:gravity="right"
+			>
+
+		<Button
+				android:id="@+id/submit_btn"
+				android:text="提交"
+				android:textColor="@android:color/white"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				/>
+	</LinearLayout>
+</LinearLayout>

@@ -8,5 +8,6 @@
 	<string name="title_confirm">确认</string>
 	<string name="forum_setting_update_succeed">更新成功</string>
 	<string name="clear_cache_succeed"> 缓存已清理</string>
+	<string name="submit_succeed">提交成功</string>
 
 </resources>

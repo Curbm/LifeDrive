@@ -5,15 +5,14 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.format.DateUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -64,6 +63,7 @@ public class PostListActivity extends AbsActivity {
     int mPageCount;
     boolean mAllLoaded;
     int mThreadId;
+    int mForumId;
     ImageLoadingTracker mImageLoadingTracker;
 
     @Override
@@ -71,7 +71,8 @@ public class PostListActivity extends AbsActivity {
       super.onCreate(savedInstanceState);
       mImageLoadingTracker = new ImageLoadingTracker(getContext(), getResources()
           .getDimensionPixelSize(R.dimen.post_image_max_size) / 2);
-      mThreadId = getActivity().getIntent().getIntExtra("id", -1);
+      mThreadId = getActivity().getIntent().getIntExtra("threadId", -1);
+      mForumId = getActivity().getIntent().getIntExtra("forumId", -1);
       refresh();
     }
 
@@ -106,9 +107,32 @@ public class PostListActivity extends AbsActivity {
     }
 
     @Override
-    protected void onItemClick(RecyclerView parent, View view, int position) {
-      Post item = mList.get(position);
-
+    protected void onItemClick(RecyclerView parent, View view, final int position) {
+      PopupMenu menu = new PopupMenu(getContext(), view.findViewById(R.id.floor_tv),
+          Gravity.END);
+      menu.inflate(R.menu.post_item_popup);
+      menu.show();
+      menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+          Post post = mList.get(position);
+          Intent intent;
+          switch (item.getItemId()) {
+            case R.id.menu_reply:
+              intent = new Intent(getContext(), ComposeActivity.class);
+              intent.putExtra("forumId", mForumId);
+              intent.putExtra("threadId", mThreadId);
+              intent.putExtra("postId", post.getId());
+              intent.putExtra("uid", post.getUid());
+              intent.putExtra("author", post.getAuthor());
+              intent.putExtra("floor", post.getFloor());
+              intent.putExtra("summary", getContentSummary(post.getContentList(), 35).toString());
+              startActivity(intent);
+              break;
+          }
+          return true;
+        }
+      });
     }
 
 
@@ -229,7 +253,7 @@ public class PostListActivity extends AbsActivity {
           TextView tv = (TextView) inflater.inflate(R.layout.post_item_content_text,
               container, false);
           tv.setText(((TextContent) content).getText());
-          tv.setMovementMethod(Util.getLinkMovementMethod());
+          Util.setLinkMovementMethod(tv);
           container.addView(tv);
         } else if (content instanceof ImageContent) {
           View view = inflater.inflate(R.layout.post_item_content_image, container, false);
@@ -295,11 +319,11 @@ public class PostListActivity extends AbsActivity {
             continue;
           }
           SpannableStringBuilder text = new SpannableStringBuilder(post.getAuthor() + ": ");
-          text.append(getContentSummary(post.getContentList()));
+          text.append(getContentSummary(post.getContentList(), 90));
           View view = inflater.inflate(R.layout.post_item_content_refer, container, false);
           TextView contentTV = (TextView) view.findViewById(R.id.content_tv);
           contentTV.setText(text);
-          contentTV.setMovementMethod(Util.getLinkMovementMethod());
+          Util.setLinkMovementMethod(contentTV);
           container.addView(view);
         } else if (content instanceof QuoteContent) {
           QuoteContent quoteContent = (QuoteContent) content;
@@ -311,7 +335,7 @@ public class PostListActivity extends AbsActivity {
           View view = inflater.inflate(R.layout.post_item_content_refer, container, false);
           TextView contentTV = (TextView) view.findViewById(R.id.content_tv);
           contentTV.setText(text);
-          contentTV.setMovementMethod(Util.getLinkMovementMethod());
+          Util.setLinkMovementMethod(contentTV);
           container.addView(view);
         }
       }
@@ -355,8 +379,7 @@ public class PostListActivity extends AbsActivity {
       return null;
     }
 
-    private SpannableStringBuilder getContentSummary(List<Content> list) {
-      final int limit = 90;
+    private SpannableStringBuilder getContentSummary(List<Content> list, int limit) {
       SpannableStringBuilder builder = new SpannableStringBuilder();
       for (Content content : list) {
         if (content instanceof TextContent) {

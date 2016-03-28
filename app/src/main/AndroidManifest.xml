@@ -38,6 +38,11 @@
 				android:screenOrientation="portrait"
 				android:name=".ui.ImageZoomActivity">
 		</activity>
+		<activity
+				android:theme="@style/ComposeActivity"
+				android:screenOrientation="portrait"
+				android:name=".ui.ComposeActivity">
+		</activity>
 	</application>
 
 </manifest>

@@ -1,8 +1,13 @@
 package com.skyfire.hipda.misc;
 
 import android.content.Context;
-import android.text.method.LinkMovementMethod;
+import android.text.Layout;
+import android.text.Spannable;
+import android.text.method.BaseMovementMethod;
 import android.text.method.MovementMethod;
+import android.text.style.ClickableSpan;
+import android.view.MotionEvent;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -10,7 +15,44 @@ import java.util.Locale;
 
 public final class Util {
 
-  static MovementMethod sLinkMovementMethod = new LinkMovementMethod();
+  static MovementMethod sLinkMovementMethod = new BaseMovementMethod() {
+    @Override
+    public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
+      // Copy from source to prevent TextView from intercepting all touch events
+      int action = event.getAction();
+
+      if (action == MotionEvent.ACTION_UP ||
+          action == MotionEvent.ACTION_DOWN) {
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+
+        x -= widget.getTotalPaddingLeft();
+        y -= widget.getTotalPaddingTop();
+
+        x += widget.getScrollX();
+        y += widget.getScrollY();
+
+        Layout layout = widget.getLayout();
+        int line = layout.getLineForVertical(y);
+        int off = layout.getOffsetForHorizontal(line, x);
+
+        ClickableSpan[] link = buffer.getSpans(off, off, ClickableSpan.class);
+
+        if (link.length != 0) {
+          if (action == MotionEvent.ACTION_UP) {
+            link[0].onClick(widget);
+          }
+          return true;
+        }
+      }
+      return false;
+    }
+
+    @Override
+    public void initialize(TextView widget, Spannable text) {
+      super.initialize(widget, text);
+    }
+  };
 
   static ThreadLocal<HashMap<String, SimpleDateFormat>> sDateFormatPool = new
       ThreadLocal<HashMap<String, SimpleDateFormat>>() {
@@ -30,8 +72,12 @@ public final class Util {
     return sdf;
   }
 
-  public static MovementMethod getLinkMovementMethod() {
-    return sLinkMovementMethod;
+  public static void setLinkMovementMethod(TextView textView) {
+    textView.setMovementMethod(sLinkMovementMethod);
+    // setMovementMethod will set these properties to true
+    textView.setClickable(false);
+    textView.setFocusable(false);
+    textView.setLongClickable(false);
   }
 
 

@@ -7,6 +7,7 @@ import com.skyfire.hipda.bean.Forum;
 import com.skyfire.hipda.bean.Post;
 import com.skyfire.hipda.bean.Thread;
 import com.skyfire.hipda.db.DbHelper;
+import com.skyfire.hipda.misc.PrefHelper;
 import com.skyfire.hipda.misc.UrlHelper;
 import com.squareup.okhttp.*;
 import rx.Observable;
@@ -18,6 +19,7 @@ import rx.subscriptions.Subscriptions;
 
 import java.io.UnsupportedEncodingException;
 import java.net.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,7 +53,6 @@ public class ApiList {
       return "";
     }
   }
-
 
   public Observable<Void> login(final String username, final String password) {
     return getLoginForumHash()
@@ -128,7 +129,39 @@ public class ApiList {
         .build();
     Call call = client.newCall(request);
     return Observable.create(new CallOnSubscribe<>(call, new PostListParser()));
+  }
 
+
+  public Observable<Void> replyPost(int forumId, int threadId, int postId, int floor, int uid,
+                                    String author, String summary, String content) {
+    HttpUrl url = HttpUrl.parse(UrlHelper.BASE_URL + "post.php?action=reply&replysubmit=yes")
+        .newBuilder()
+        .addEncodedQueryParameter("fid", String.valueOf(forumId))
+        .addEncodedQueryParameter("tid", String.valueOf(threadId))
+        .build();
+
+    final String contentHeader = encode(String.format("[b]\u56de\u590d [url=%1$sredirect" +
+        ".php?goto=findpost&pid=%2$d&ptid=%3$d]%4$d#[/url] [i]%5$s[/i] [/b]" +
+        "\n" +
+        "\n" +
+        "\n" +
+        "    ", UrlHelper.BASE_URL, postId, threadId, floor, author));
+    RequestBody requestBody = new FormEncodingBuilder()
+        .addEncoded("posttime", String.valueOf(new Date().getTime()))
+        .addEncoded("formhash", PrefHelper.getForumHash())
+        .addEncoded("wysiwyg", "1")
+        .addEncoded("noticeauthor", encode(String.format("r|%1$d|[i]%2$s[/i]", uid, author)))
+        .addEncoded("noticetrimstr", contentHeader)
+        .addEncoded("noticeauthormsg", encode(summary))
+        .addEncoded("subject", "")
+        .addEncoded("message", contentHeader + encode(content))
+        .build();
+    Request request = new Request.Builder()
+        .url(url)
+        .post(requestBody)
+        .build();
+    Call call = client.newCall(request);
+    return Observable.create(new CallOnSubscribe<>(call, new ReplyPostParser()));
   }
 
   static class CallOnSubscribe<T> implements Observable.OnSubscribe<T> {

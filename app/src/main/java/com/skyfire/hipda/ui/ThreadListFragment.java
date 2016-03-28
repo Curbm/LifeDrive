@@ -63,7 +63,8 @@ public class ThreadListFragment extends AbsListFragment<List<Thread>> {
   protected void onItemClick(RecyclerView parent, View view, int position) {
     Thread item = mList.get(position);
     Intent intent = new Intent(getContext(), PostListActivity.class);
-    intent.putExtra("id", item.getId());
+    intent.putExtra("threadId", item.getId());
+    intent.putExtra("forumId", mForumId);
     startActivity(intent);
   }
 
